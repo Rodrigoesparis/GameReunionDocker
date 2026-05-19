@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GameReunionApplication<gameReunion>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rodrigo.GameReunionApplication",
+            "projectName": "gameReunion",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
