@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 class ApiService {
   static const String baseUrl = 'http://10.0.2.2:8080';
@@ -314,4 +315,46 @@ class ApiService {
       return null;
     }
   }
+
+  // Subir foto de perfil
+static Future<String?> uploadUserPhoto(int userId, File imageFile) async {
+  try {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/images/user/$userId'),
+    );
+    request.files.add(
+      await http.MultipartFile.fromPath('file', imageFile.path),
+    );
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      final body = jsonDecode(await response.stream.bytesToString());
+      return body['photoUrl'];
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Subir foto de grupo
+static Future<String?> uploadGroupPhoto(int groupId, File imageFile) async {
+  try {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl/images/group/$groupId'),
+    );
+    request.files.add(
+      await http.MultipartFile.fromPath('file', imageFile.path),
+    );
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      final body = jsonDecode(await response.stream.bytesToString());
+      return body['photoUrl'];
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
 }

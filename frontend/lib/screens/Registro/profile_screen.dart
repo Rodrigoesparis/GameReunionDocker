@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import '../../services/api_service.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -37,6 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<String> _games = [];
   List<String> _platforms = [];
   List<String> _languages = [];
+
+  File? _newPhoto;
 
   // Controllers para añadir items
   final _gameInputCtrl = TextEditingController();
@@ -233,14 +237,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF7C3AED),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.person, color: Colors.white, size: 48),
-                ),
+                GestureDetector(
+  onTap: widget.isOwner ? _pickAndUploadPhoto : null,
+  child: Stack(
+    children: [
+      Container(
+        width: 96,
+        height: 96,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFF7C3AED),
+          image: _newPhoto != null
+              ? DecorationImage(
+                  image: FileImage(_newPhoto!),
+                  fit: BoxFit.cover,
+                )
+              : (_profile!['photoUrl'] != null
+                  ? DecorationImage(
+                      image: NetworkImage(_profile!['photoUrl']),
+                      fit: BoxFit.cover,
+                    )
+                  : null),
+        ),
+        child: (_newPhoto == null && _profile!['photoUrl'] == null)
+            ? const Icon(Icons.person, color: Colors.white, size: 48)
+            : null,
+      ),
+      if (widget.isOwner)
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: const BoxDecoration(
+              color: Color(0xFF7C3AED),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.camera_alt, color: Colors.white, size: 14),
+          ),
+        ),
+    ],
+  ),
+),
                 const SizedBox(height: 12),
                 // Nombre (no editable)
                 Text(
@@ -741,4 +779,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _emptyField(String text) {
     return Text(text, style: const TextStyle(color: Colors.grey, fontSize: 13));
   }
+
+  Future<void> _pickAndUploadPhoto() async {
+  final picker = ImagePicker();
+  final picked = await picker.pickImage(
+    source: ImageSource.gallery,
+    maxWidth: 512,
+    maxHeight: 512,
+    imageQuality: 85,
+  );
+  if (picked == null) return;
+
+  final file = File(picked.path);
+  final url = await ApiService.uploadUserPhoto(widget.user['idUser'], file);
+
+  if (url != null) {
+    setState(() {
+      _profile!['photoUrl'] = url;
+      _newPhoto = file;
+    });
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Foto actualizada'),
+          backgroundColor: Color(0xFF7C3AED),
+        ),
+      );
+    }
+  } else {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al subir la foto'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+}
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -19,6 +21,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   bool _loading = false;
   bool _obscurePassword = true;
   String? _error;
+  File? _groupPhoto;
 
   @override
   void dispose() {
@@ -29,39 +32,56 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     super.dispose();
   }
 
-  void _createGroup() async {
-    // Validar que si es privado con contraseña, haya contraseña
-    if (_privacy == 'PRIVADO_PASSWORD' &&
-        _passwordController.text.trim().isEmpty) {
-      setState(() => _error = 'Debes introducir una contraseña para el grupo');
-      return;
-    }
-
-    setState(() {
-      _loading = true;
-      _error = null;
-    });
-
-    final result = await ApiService.createGroup(
-      creatorId: widget.user['idUser'],
-      name: _nameController.text,
-      game: _gameController.text,
-      mode: _mode,
-      privacy: _privacy,
-      maxPlayers: int.tryParse(_maxPlayersController.text) ?? 5,
-      password: _privacy == 'PRIVADO_PASSWORD'
-          ? _passwordController.text.trim()
-          : null,
-    );
-
-    setState(() => _loading = false);
-
-    if (result != null) {
-      Navigator.pop(context, true);
-    } else {
-      setState(() => _error = 'Error al crear el grupo');
-    }
+      Future<void> _pickPhoto() async {
+  final picker = ImagePicker();
+  final picked = await picker.pickImage(
+    source: ImageSource.gallery,
+    maxWidth: 512,
+    maxHeight: 512,
+    imageQuality: 85,
+  );
+  if (picked != null) {
+    setState(() => _groupPhoto = File(picked.path));
   }
+}
+
+ void _createGroup() async {
+  if (_privacy == 'PRIVADO_PASSWORD' &&
+      _passwordController.text.trim().isEmpty) {
+    setState(() => _error = 'Debes introducir una contraseña para el grupo');
+    return;
+  }
+
+  setState(() {
+    _loading = true;
+    _error = null;
+  });
+
+  final result = await ApiService.createGroup(
+    creatorId: widget.user['idUser'],
+    name: _nameController.text,
+    game: _gameController.text,
+    mode: _mode,
+    privacy: _privacy,
+    maxPlayers: int.tryParse(_maxPlayersController.text) ?? 5,
+    password: _privacy == 'PRIVADO_PASSWORD'
+        ? _passwordController.text.trim()
+        : null,
+  );
+
+  if (result != null && _groupPhoto != null) {
+    await ApiService.uploadGroupPhoto(result['idGroup'], _groupPhoto!);
+  }
+
+  setState(() => _loading = false);
+
+  if (result != null) {
+    Navigator.pop(context, true);
+  } else {
+    setState(() => _error = 'Error al crear el grupo');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +106,44 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ── Foto del grupo (opcional) ──
+Center(
+  child: GestureDetector(
+    onTap: _pickPhoto,
+    child: Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F0F13),
+        shape: BoxShape.circle,
+        image: _groupPhoto != null
+            ? DecorationImage(
+                image: FileImage(_groupPhoto!),
+                fit: BoxFit.cover,
+              )
+            : null,
+        border: Border.all(
+          color: const Color(0xFF7C3AED).withOpacity(0.5),
+          width: 2,
+        ),
+      ),
+      child: _groupPhoto == null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.add_a_photo, color: Color(0xFF7C3AED), size: 28),
+                SizedBox(height: 4),
+                Text(
+                  'Foto',
+                  style: TextStyle(color: Colors.grey, fontSize: 11),
+                ),
+              ],
+            )
+          : null,
+    ),
+  ),
+),
+const SizedBox(height: 20),
               const Text(
                 'Nombre del grupo',
                 style: TextStyle(color: Colors.white),
