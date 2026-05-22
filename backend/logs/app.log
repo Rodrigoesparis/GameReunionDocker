@@ -1,6 +1,4 @@
-2026-05-21 14:03:08 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 26160 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC\backend)
-2026-05-21 14:03:08 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-21 14:03:28 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 21.432 seconds (process running for 23.92)
-2026-05-21 14:38:28 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 6264 (C:\Users\rodri\TFC\backend\target\classes started by rodri in c:\Users\rodri\TFC\backend)
-2026-05-21 14:38:28 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-21 14:38:44 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 16.815 seconds (process running for 18.35)
+2026-05-22 11:49:36 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 1372 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC\backend)
+2026-05-22 11:49:36 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-22 11:49:51 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 15.725 seconds (process running for 17.687)
+2026-05-22 11:56:38 INFO  [c.r.controlador.ProfileController] - [PROFILE ACTUALIZADO] userId=1
