@@ -279,4 +279,39 @@ class ApiService {
     );
     return {'success': response.statusCode == 200, 'message': response.body};
   }
+
+  // Obtener perfil completo de un usuario
+  static Future<Map<String, dynamic>?> getProfile(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/profile/$userId'),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+// Actualizar perfil (todos los campos opcionales)
+  static Future<Map<String, dynamic>?> updateProfile(
+      int userId,
+      Map<String, dynamic> data,
+      ) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/profile/$userId'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

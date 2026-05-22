@@ -170,6 +170,8 @@ class _MainScreenState extends State<MainScreen> {
                 builder: (_) => ProfileScreen(
                   user: widget.user,
                   participant: _userParticipant,
+                  isOwner: true,
+                  loggedUserId: widget.user['idUser'],
                 ),
               ),
             ),
