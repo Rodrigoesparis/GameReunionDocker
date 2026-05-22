@@ -43,13 +43,16 @@ public class GameReunion {
     private List<Participant> participant;
 
     // Solicitudes de entrada pendientes
-@OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
-@JsonIgnore
-private List<Request> requests;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Request> requests;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Message> messages;
+
+    @Column(name = "photo_url", nullable = true)
+    private String photoUrl;
 
     public Integer getIdGroup() { return idGroup; }
     public void setIdGroup(Integer idGroup) { this.idGroup = idGroup; }
@@ -83,4 +86,7 @@ private List<Request> requests;
 
     public List<Message> getMessages(){ return messages;}
     public void setMessage(List<Message>messages){this.messages = messages;}
+
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 }

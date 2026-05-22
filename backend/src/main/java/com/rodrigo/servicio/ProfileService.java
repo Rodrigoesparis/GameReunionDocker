@@ -62,6 +62,7 @@ public class ProfileService {
         profile.put("callStyle", user.getCallStyle());
         profile.put("country", user.getCountry());
         profile.put("timezone", user.getTimezone());
+        profile.put("photoUrl", user.getPhotoUrl()); // ← aquí, junto a los demás campos
         profile.put("games", games);
         profile.put("languages", languages);
         profile.put("platforms", platforms);
@@ -76,7 +77,6 @@ public class ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        // Campos simples opcionales
         if (body.containsKey("username")) {
             String newUsername = body.get("username").toString().trim();
             if (newUsername.isEmpty()) throw new IllegalArgumentException("El username no puede estar vacío");
@@ -97,11 +97,9 @@ public class ProfileService {
 
         userRepository.save(user);
 
-        // Juegos (máximo 4)
         if (body.containsKey("games")) {
             List<String> gameNames = castList(body.get("games"));
             if (gameNames.size() > 4) throw new IllegalArgumentException("Máximo 4 juegos favoritos");
-
             gamesRepository.deleteByUserIdUser(userId);
             for (int i = 0; i < gameNames.size(); i++) {
                 Games g = new Games();
@@ -112,7 +110,6 @@ public class ProfileService {
             }
         }
 
-        // Idiomas
         if (body.containsKey("languages")) {
             List<String> langs = castList(body.get("languages"));
             lenguageRepository.deleteByUserIdUser(userId);
@@ -124,7 +121,6 @@ public class ProfileService {
             }
         }
 
-        // Plataformas
         if (body.containsKey("platforms")) {
             List<String> plats = castList(body.get("platforms"));
             platformRepository.deleteByUserIdUser(userId);

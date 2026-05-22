@@ -71,6 +71,9 @@ public class User {
 	@JsonIgnore
 	private List<Lenguage> languages;
 
+	@Column(name = "photo_url", nullable = true)
+	private String photoUrl;
+
 	public Integer getIdUser() {
 		return idUser;
 	}
@@ -174,5 +177,7 @@ public String getCallStyle() {
 public void setCallStyle(String callStyle) {
     this.callStyle = callStyle;
 }
+
+public String getPhotoUrl() { return photoUrl; }
+public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 	}
-	
