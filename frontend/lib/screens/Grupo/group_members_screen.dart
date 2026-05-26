@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
+import '../../widgets/user_avatar.dart';
 
 class GroupMembersScreen extends StatefulWidget {
   final int groupId;
@@ -330,20 +331,9 @@ class _GroupMembersScreenState extends State<GroupMembersScreen> {
                         leading: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            CircleAvatar(
-                              backgroundColor: const Color(
-                                0xFF7C3AED,
-                              ).withOpacity(0.3),
-                              child: Text(
-                                (user['username'] ?? '?')
-                                    .toString()
-                                    .substring(0, 1)
-                                    .toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            UserAvatar(
+                              username: user['username'] ?? '?',
+                              photoUrl: user['photoUrl'],
                             ),
                             if (isThisLeader)
                               const Positioned(

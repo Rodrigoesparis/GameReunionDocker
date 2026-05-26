@@ -6,6 +6,7 @@ import '../Grupo/chat_overlay.dart';
 import '../Grupo/group_members_screen.dart';
 import 'package:http/http.dart' as http;
 import '../Grupo/voice_channel_overlay.dart';
+import '../../widgets/user_avatar.dart';
 
 class GroupsScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -296,18 +297,35 @@ class GroupsScreenState extends State<GroupsScreen> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF7C3AED).withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.sports_esports,
-                          color: Color(0xFF7C3AED),
-                          size: 28,
-                        ),
-                      ),
+                     Container(
+  padding: const EdgeInsets.all(12),
+  decoration: BoxDecoration(
+    color: group['photoUrl'] != null && group['photoUrl'].toString().isNotEmpty
+        ? Colors.transparent
+        : const Color(0xFF7C3AED).withOpacity(0.2),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: group['photoUrl'] != null && group['photoUrl'].toString().isNotEmpty
+      ? ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            group['photoUrl'],
+            width: 52,
+            height: 52,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const Icon(
+              Icons.sports_esports,
+              color: Color(0xFF7C3AED),
+              size: 28,
+            ),
+          ),
+        )
+      : const Icon(
+          Icons.sports_esports,
+          color: Color(0xFF7C3AED),
+          size: 28,
+        ),
+),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -537,21 +555,10 @@ class GroupsScreenState extends State<GroupsScreen> {
                               Stack(
                                 clipBehavior: Clip.none,
                                 children: [
-                                  CircleAvatar(
-                                    backgroundColor: const Color(
-                                      0xFF7C3AED,
-                                    ).withOpacity(0.3),
-                                    child: Text(
-                                      (u['username'] ?? '?')
-                                          .toString()
-                                          .substring(0, 1)
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                                  UserAvatar(
+  username: u['username'] ?? '?',
+  photoUrl: u['photoUrl'],
+),
                                   if (isLeader)
                                     const Positioned(
                                       top: -6,
@@ -824,20 +831,11 @@ class _PendingRequestsButtonState extends State<_PendingRequestsButton> {
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: const Color(0xFF7C3AED).withOpacity(0.3),
-                    radius: 18,
-                    child: Text(
-                      (r['username'] ?? '?')
-                          .toString()
-                          .substring(0, 1)
-                          .toUpperCase(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  UserAvatar(
+  username: r['username'] ?? '?',
+  photoUrl: r['photoUrl'],
+  radius: 18,
+),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(

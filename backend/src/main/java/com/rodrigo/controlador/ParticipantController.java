@@ -9,6 +9,7 @@ import com.rodrigo.repositorio.ParticipantRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/participants")
@@ -97,24 +98,24 @@ public ResponseEntity<?> kickUser(@RequestParam Integer requesterId,
 
     // Listar participantes de un grupo 
 
-    @GetMapping("/{groupId}")
-    public ResponseEntity<?> listParticipants(@PathVariable Integer groupId) {
-        try {
-            List<Participant> participants = participantService.listarParticipantes(groupId);
-            return ResponseEntity.ok(participants);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+   @GetMapping("/{groupId}")
+public ResponseEntity<?> listParticipants(@PathVariable Integer groupId) {
+    try {
+        List<Map<String, Object>> participants = participantService.listarParticipantes(groupId);
+        return ResponseEntity.ok(participants);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
     // Ver en qué grupo está un usuario(Para al iniciar sesion si estaba en el grupo que se quede etc)
 
-    @GetMapping("/user/{userId}")
+@GetMapping("/user/{userId}")
 public ResponseEntity<?> getUserGroup(@PathVariable Integer userId) {
-    Participant p = participantService.obtenerGrupoDeUsuario(userId);
-    if (p == null) {
+    Map<String, Object> result = participantService.obtenerGrupoDeUsuario(userId);
+    if (result == null) {
         return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(p);
+    return ResponseEntity.ok(result);
 }
 }

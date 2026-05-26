@@ -1,9 +1,11 @@
-2026-05-22 11:49:36 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 1372 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC\backend)
-2026-05-22 11:49:36 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-22 11:49:51 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 15.725 seconds (process running for 17.687)
-2026-05-22 11:56:38 INFO  [c.r.controlador.ProfileController] - [PROFILE ACTUALIZADO] userId=1
-2026-05-22 13:26:04 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 26808 (C:\Users\rodri\TFC\backend\target\classes started by rodri in c:\Users\rodri\TFC\backend)
-2026-05-22 13:26:04 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-22 13:26:23 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 19.445 seconds (process running for 21.424)
-2026-05-22 13:42:23 INFO  [c.r.c.GameReunionController] - [GRUPO CREADO] idGroup=12 nombre='Grupo de Rodrigo Esparis' juego='Varios' modo='CASUAL' privacidad=ABIERTO maxJugadores=5 creadoPor=userId=1
-2026-05-22 13:42:34 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=12
+2026-05-26 11:12:07 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 9496 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC\backend)
+2026-05-26 11:12:07 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-26 11:12:28 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 21.771 seconds (process running for 23.407)
+2026-05-26 11:17:10 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=1 groupId=10
+2026-05-26 11:23:30 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=10
+2026-05-26 11:23:45 INFO  [c.r.c.GameReunionController] - [GRUPO CREADO] idGroup=13 nombre='Grupo de Rodrigo Esparis' juego='Varios' modo='CASUAL' privacidad=ABIERTO maxJugadores=5 creadoPor=userId=1
+2026-05-26 11:46:13 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 20028 (C:\Users\rodri\TFC\backend\target\classes started by rodri in c:\Users\rodri\TFC\backend)
+2026-05-26 11:46:13 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-26 11:46:31 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 18.928 seconds (process running for 22.755)
+2026-05-26 11:47:29 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=14
+2026-05-26 11:47:43 INFO  [c.r.c.GameReunionController] - [GRUPO CREADO] idGroup=15 nombre='Grupo de Rodrigo Esparis' juego='Varios' modo='CASUAL' privacidad=ABIERTO maxJugadores=5 creadoPor=userId=1

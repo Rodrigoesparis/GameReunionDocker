@@ -1,16 +1,13 @@
-2026-05-19 11:16:13 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 20704 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
-2026-05-19 11:16:13 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-19 11:16:31 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 19.271 seconds (process running for 20.458)
-2026-05-19 11:17:13 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=1 groupId=7
-2026-05-19 11:17:42 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=7
-2026-05-19 11:17:55 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=1 groupId=7
-2026-05-19 11:19:47 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 22004 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
-2026-05-19 11:19:47 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-19 11:20:01 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 15.864 seconds (process running for 16.864)
-2026-05-19 11:20:37 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=7
-2026-05-19 11:20:50 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=1 groupId=7
-2026-05-19 11:21:31 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=7
-2026-05-19 11:21:41 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 5232 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
-2026-05-19 11:21:41 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
-2026-05-19 11:21:55 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 16.164 seconds (process running for 17.23)
-2026-05-19 11:22:08 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=1 groupId=7
+2026-05-26 11:31:09 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 28240 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
+2026-05-26 11:31:09 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-26 11:31:23 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 15.188 seconds (process running for 15.892)
+2026-05-26 11:32:34 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 23624 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
+2026-05-26 11:32:34 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-26 11:32:46 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 12.826 seconds (process running for 13.367)
+2026-05-26 11:33:33 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=2 groupId=11
+2026-05-26 11:33:48 INFO  [c.r.c.ParticipantController] - [USUARIO SE UNE] userId=2 groupId=13
+2026-05-26 11:35:59 INFO  [c.r.c.ParticipantController] - [USUARIO SALE] userId=1 groupId=13
+2026-05-26 11:36:10 INFO  [c.r.c.GameReunionController] - [GRUPO CREADO] idGroup=14 nombre='Grupo de Rodrigo Esparis' juego='Varios' modo='CASUAL' privacidad=ABIERTO maxJugadores=5 creadoPor=userId=1
+2026-05-26 11:57:18 INFO  [com.rodrigo.GameReunionApplication] - Starting GameReunionApplication using Java 21.0.8 with PID 25920 (C:\Users\rodri\TFC\backend\target\classes started by rodri in C:\Users\rodri\TFC)
+2026-05-26 11:57:18 INFO  [com.rodrigo.GameReunionApplication] - No active profile set, falling back to 1 default profile: "default"
+2026-05-26 11:57:37 INFO  [com.rodrigo.GameReunionApplication] - Started GameReunionApplication in 20.249 seconds (process running for 20.791)

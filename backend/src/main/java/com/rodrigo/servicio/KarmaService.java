@@ -5,7 +5,11 @@ import com.rodrigo.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class KarmaService {
@@ -46,10 +50,18 @@ public class KarmaService {
         karmaVoteRepository.save(vote);
     }
 
-    public List<User> getRanking() {
-        return userRepository.findAll()
-            .stream()
-            .sorted((a, b) -> b.getKarma() - a.getKarma())
-            .toList();
-    }
+    public List<Map<String, Object>> getRanking() {
+    return userRepository.findAll()
+        .stream()
+        .sorted((a, b) -> b.getKarma() - a.getKarma())
+        .map(u -> {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("idUser", u.getIdUser());
+            m.put("username", u.getUsername());
+            m.put("karma", u.getKarma());
+            m.put("photoUrl", u.getPhotoUrl());
+            return m;
+        })
+        .toList();
+}
 }

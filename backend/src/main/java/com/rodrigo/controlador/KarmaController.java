@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/karma")
 public class KarmaController {
@@ -30,7 +32,7 @@ public class KarmaController {
 
     // Obtener ranking
     @GetMapping("/ranking")
-    public ResponseEntity<List<User>> getRanking() {
+    public ResponseEntity<List<Map<String, Object>>> getRanking() {
         return ResponseEntity.ok(karmaService.getRanking());
     }
 }

@@ -6,7 +6,12 @@ import org.springframework.stereotype.Service;
 import com.rodrigo.controlador.GroupEventController;
 import com.rodrigo.modelo.*;
 import com.rodrigo.repositorio.*;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class ParticipantService {
@@ -117,16 +122,50 @@ private GroupEventController groupEventController;
 
     //  Listar participantes de un grupo 
 
-    public List<Participant> listarParticipantes(Integer groupId) {
-        if (!groupRepository.existsById(groupId)) {
-            throw new IllegalArgumentException("Grupo no encontrado.");
-        }
-        return participantRepository.findByGroupIdGroup(groupId);
+public List<Map<String, Object>> listarParticipantes(Integer groupId) {
+    if (!groupRepository.existsById(groupId)) {
+        throw new IllegalArgumentException("Grupo no encontrado.");
     }
+    return participantRepository.findByGroupIdGroup(groupId)
+        .stream()
+        .map(p -> {
+            User u = p.getUser();
+            Map<String, Object> userMap = new LinkedHashMap<>();
+            userMap.put("idUser", u.getIdUser());
+            userMap.put("username", u.getUsername());
+            userMap.put("photoUrl", u.getPhotoUrl());
+            userMap.put("karma", u.getKarma());
+
+            Map<String, Object> result = new LinkedHashMap<>();
+            result.put("user", userMap);
+            result.put("role", p.getRole());
+            return result;
+        })
+        .toList();
+}
 
     //  Obtener el grupo actual de un usuario 
 
-    public Participant obtenerGrupoDeUsuario(Integer userId) {
-        return participantRepository.findByUserIdUser(userId).orElse(null);
-    }
+    public Map<String, Object> obtenerGrupoDeUsuario(Integer userId) {
+    Participant p = participantRepository.findByUserIdUser(userId).orElse(null);
+    if (p == null) return null;
+
+    GameReunion g = p.getGroup();
+    int currentPlayers = participantRepository.countByGroupIdGroup(g.getIdGroup());
+
+    Map<String, Object> groupMap = new LinkedHashMap<>();
+    groupMap.put("idGroup", g.getIdGroup());
+    groupMap.put("name", g.getName());
+    groupMap.put("game", g.getGame());
+    groupMap.put("mode", g.getMode());
+    groupMap.put("privacy", g.getPrivacy());
+    groupMap.put("maxPlayers", g.getMaxPlayers());
+    groupMap.put("currentPlayers", currentPlayers);
+    groupMap.put("photoUrl", g.getPhotoUrl()); // ← clave
+
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("group", groupMap);
+    result.put("role", p.getRole());
+    return result;
+}
 }

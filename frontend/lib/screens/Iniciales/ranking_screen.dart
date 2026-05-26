@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
+import '../../widgets/user_avatar.dart';
 
 class RankingScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -125,20 +126,9 @@ class _RankingScreenState extends State<RankingScreen> {
                       const SizedBox(width: 12),
 
                       // Avatar
-                      CircleAvatar(
-                        backgroundColor: const Color(
-                          0xFF7C3AED,
-                        ).withOpacity(0.3),
-                        child: Text(
-                          (u['username'] ?? '?')
-                              .toString()
-                              .substring(0, 1)
-                              .toUpperCase(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      UserAvatar(
+                        username: u['username'] ?? '?',
+                        photoUrl: u['photoUrl'],
                       ),
                       const SizedBox(width: 12),
 

@@ -3,6 +3,7 @@ import '../../services/api_service.dart';
 import '../Grupo/group_detail_screen.dart';
 import '../../services/websocket_service.dart';
 import 'dart:async';
+import '../../widgets/user_avatar.dart';
 
 class SearchScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -185,17 +186,32 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(16),
-                          leading: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF7C3AED).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.groups,
-                              color: Color(0xFF7C3AED),
-                            ),
-                          ),
+                          leading: group['photoUrl'] != null && group['photoUrl'].toString().isNotEmpty
+    ? ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          group['photoUrl'],
+          width: 44,
+          height: 44,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF7C3AED).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.groups, color: Color(0xFF7C3AED)),
+          ),
+        ),
+      )
+    : Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFF7C3AED).withOpacity(0.2),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(Icons.groups, color: Color(0xFF7C3AED)),
+      ),
                           title: Text(
                             group['name'] ?? '',
                             style: const TextStyle(

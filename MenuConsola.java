@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.Map;
 
 @Component
 public class MenuConsola implements CommandLineRunner {
@@ -23,6 +24,7 @@ public class MenuConsola implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
         System.out.println("\n=== GAMEREUNION - CONSOLA ===");
 
         while (true) {
@@ -191,12 +193,13 @@ public class MenuConsola implements CommandLineRunner {
     }
 
     private void verParticipantes(Integer groupId) {
-        List<Participant> lista = participantService.listarParticipantes(groupId);
-        System.out.println("\n--- Participantes ---");
-        for (Participant p : lista) {
-            System.out.println("- " + p.getUser().getUsername() + " [" + p.getRole() + "]");
-        }
+    List<Map<String, Object>> lista = participantService.listarParticipantes(groupId);
+    System.out.println("\n--- Participantes ---");
+    for (Map<String, Object> p : lista) {
+        Map<String, Object> user = (Map<String, Object>) p.get("user");
+        System.out.println("- " + user.get("username") + " [" + p.get("role") + "]");
     }
+}
 
     private void salirDelGrupo(Integer groupId) {
         try {
