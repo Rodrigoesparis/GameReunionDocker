@@ -17,11 +17,13 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 
-     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/avatars/**")
-                .addResourceLocations("file:uploads/avatars/");
-        registry.addResourceHandler("/groups/**")
-                .addResourceLocations("file:uploads/groups/");
-    }
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    String uploadPath = System.getProperty("user.dir").replace("\\", "/") + "/uploads/";
+    System.out.println(">>> UPLOAD PATH: " + uploadPath);
+    registry.addResourceHandler("/uploads/avatars/**")
+            .addResourceLocations("file:///" + uploadPath + "avatars/");
+    registry.addResourceHandler("/uploads/groups/**")
+            .addResourceLocations("file:///" + uploadPath + "groups/");
+}
 }

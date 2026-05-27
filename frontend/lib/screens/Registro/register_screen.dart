@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 import 'login_screen.dart';
+import 'verify_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,31 +19,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
   String? _error;
 
-  void _register() async {
-    setState(() {
-      _loading = true;
-      _error = null;
-    });
 
-    final user = await ApiService.register(
-      _nameController.text,
-      _usernameController.text,
-      _emailController.text,
-      _passwordController.text,
-      int.tryParse(_ageController.text) ?? 0,
-    );
+void _register() async {
+  setState(() {
+    _loading = true;
+    _error = null;
+  });
 
-    setState(() => _loading = false);
+  final user = await ApiService.register(
+    _nameController.text,
+    _usernameController.text,
+    _emailController.text,
+    _passwordController.text,
+    int.tryParse(_ageController.text) ?? 0,
+  );
 
-    if (user != null) {
+  setState(() => _loading = false);
+
+  if (user != null) {
+    if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(
+          builder: (_) => VerifyScreen(email: _emailController.text),
+        ),
       );
-    } else {
-      setState(() => _error = 'Error al registrarse, prueba con otro username');
     }
+  } else {
+    setState(() => _error = 'Error al registrarse, prueba con otro username');
   }
+}
 
   @override
   Widget build(BuildContext context) {

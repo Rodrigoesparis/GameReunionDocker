@@ -24,7 +24,7 @@ public class ImageController {
     private String uploadDir;
 
     // cambia esto por tu IP local cuando pruebes en dispositivo físico
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/uploads/";
 
     @Autowired
     private UserRepository userRepository;
@@ -91,16 +91,35 @@ public class ImageController {
     }
 
     private void deleteOldFile(String oldUrl) {
-        if (oldUrl == null || oldUrl.isBlank()) return;
-        try {
-            String relative = oldUrl.replace(BASE_URL, "");
-            Path old = Paths.get(uploadDir, relative);
-            Files.deleteIfExists(old);
-        } catch (IOException ignored) {}
-    }
+    if (oldUrl == null || oldUrl.isBlank()) return;
+    try {
+        String relative = oldUrl.replace(BASE_URL, "");
+        Path old = Paths.get(uploadDir, relative);
+        System.out.println(">>> BORRANDO: " + old.toAbsolutePath());
+        Files.deleteIfExists(old);
+    } catch (IOException ignored) {}
+}
 
     private String getExtension(String filename) {
         if (filename == null || !filename.contains(".")) return ".jpg";
         return filename.substring(filename.lastIndexOf("."));
     }
+
+    @GetMapping("/uploads/{folder}/{filename}")
+public ResponseEntity<byte[]> serveFile(
+        @PathVariable String folder,
+        @PathVariable String filename) {
+    try {
+        Path filePath = Paths.get(uploadDir, folder, filename);
+        byte[] data = Files.readAllBytes(filePath);
+        
+        String contentType = filename.endsWith(".png") ? "image/png" : "image/jpeg";
+        
+        return ResponseEntity.ok()
+                .header("Content-Type", contentType)
+                .body(data);
+    } catch (IOException e) {
+        return ResponseEntity.notFound().build();
+    }
+}
 }

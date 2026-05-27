@@ -350,11 +350,29 @@ static Future<String?> uploadGroupPhoto(int groupId, File imageFile) async {
     final response = await request.send();
     if (response.statusCode == 200) {
       final body = jsonDecode(await response.stream.bytesToString());
+      print('>>> PHOTO URL: ${body['photoUrl']}');
       return body['photoUrl'];
     }
     return null;
   } catch (e) {
     return null;
+  }
+}
+
+// Verificar código de email
+static Future<Map<String, dynamic>> verifyEmail(String email, String code) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/users/verify'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'code': code}),
+    );
+    return {
+      'success': response.statusCode == 200,
+      'message': response.body,
+    };
+  } catch (e) {
+    return {'success': false, 'message': 'Error de conexión'};
   }
 }
 }

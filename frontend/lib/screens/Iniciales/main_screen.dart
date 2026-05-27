@@ -8,6 +8,7 @@ import '../../services/api_service.dart';
 import '../../services/websocket_service.dart';
 import 'dart:async';
 import 'ranking_screen.dart';
+import '../../widgets/user_avatar.dart';
 
 class MainScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -20,6 +21,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   Map<String, dynamic>? _userParticipant;
+  Map<String, dynamic>? _profile; // ← nuevo
   final _groupsKey = GlobalKey<GroupsScreenState>();
   Timer? _debounce;
 
@@ -27,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _loadUserGroup();
+    _loadProfile(); // ← nuevo
     WebSocketService.instance.connect();
     WebSocketService.instance.addGroupListener(_onGroupEvent);
   }
@@ -49,6 +52,11 @@ class _MainScreenState extends State<MainScreen> {
   void _loadUserGroup() async {
     final result = await ApiService.getUserGroup(widget.user['idUser']);
     setState(() => _userParticipant = result);
+  }
+
+  Future<void> _loadProfile() async { // ← nuevo
+    final result = await ApiService.getProfile(widget.user['idUser']);
+    setState(() => _profile = result);
   }
 
   void _openChat() {
@@ -162,23 +170,33 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onPressed: _openChat,
             ),
-          IconButton(
-            icon: const Icon(Icons.person, color: Colors.white),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ProfileScreen(
-                  user: widget.user,
-                  participant: _userParticipant,
-                  isOwner: true,
-                  loggedUserId: widget.user['idUser'],
+          // ── Avatar en el AppBar ──
+          GestureDetector(
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfileScreen(
+                    user: widget.user,
+                    participant: _userParticipant,
+                    isOwner: true,
+                    loggedUserId: widget.user['idUser'],
+                  ),
                 ),
+              );
+              _loadProfile(); // recarga al volver
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: UserAvatar(
+                username: widget.user['username'] ?? '?',
+                photoUrl: _profile?['photoUrl'],
+                radius: 18,
               ),
             ),
           ),
         ],
       ),
-      // FAB solo en Servidores
       floatingActionButton: _currentIndex == 1
           ? FloatingActionButton.extended(
               onPressed: _openCreate,
@@ -234,7 +252,6 @@ class _MainScreenState extends State<MainScreen> {
           SearchScreen(
             user: widget.user,
             onJoinedGroup: () {
-              // NUEVO
               _groupsKey.currentState?.reload();
               _loadUserGroup();
             },

@@ -6,9 +6,13 @@ import com.rodrigo.modelo.User;
 import com.rodrigo.repositorio.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private UserRepository userRepository;
@@ -28,17 +32,24 @@ public class UserService {
             throw new IllegalArgumentException("Debes tener al menos 13 años para registrarte.");
         }
 
+        String code = String.valueOf((int)(Math.random() * 900000)+100000);
+
         User user = new User();
         user.setName(name);
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(password); // ⚠️ En el futuro: encriptar con BCrypt
+        user.setPassword(password);
         user.setAge(age);
+        user.setVerified(false);
+        user.setVerificationCode(code);
+
+
+        emailService.sendVerificationCode(email, code);
 
         return userRepository.save(user);
     }
 
-    //  Login básico (para consola, sin tokens) 
+    //  Login básico (para consola, sin tokens)
 
     public User login(String username, String password) {
         User user = userRepository.findByUsername(username)
@@ -48,10 +59,37 @@ public class UserService {
             throw new IllegalArgumentException("Contraseña incorrecta.");
         }
 
+        if (!user.isVerified()) {
+        throw new IllegalArgumentException("Cuenta no verificada. Revisa tu email.");
+    }
+
         return user;
     }
 
-    //  Consultas 
+ @Transactional
+public void verificarCodigo(String email, String code) {
+    System.out.println(">>> BUSCANDO EMAIL: " + email);
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
+
+    System.out.println(">>> USUARIO: " + user.getUsername() + " verified=" + user.isVerified());
+    System.out.println(">>> CODE DB: " + user.getVerificationCode() + " CODE INPUT: " + code);
+
+    if (user.isVerified()) {
+        throw new IllegalStateException("La cuenta ya está verificada.");
+    }
+
+    if (!code.equals(user.getVerificationCode())) {
+        throw new IllegalArgumentException("Código incorrecto.");
+    }
+
+    user.setVerified(true);
+    user.setVerificationCode(null);
+    userRepository.save(user);
+    System.out.println(">>> GUARDADO verified=" + user.isVerified());
+}
+
+    //  Consultas
 
     public Optional<User> buscarPorId(Integer id) {
         return userRepository.findById(id);

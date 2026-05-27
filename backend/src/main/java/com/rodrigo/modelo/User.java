@@ -74,6 +74,12 @@ public class User {
 	@Column(name = "photo_url", nullable = true)
 	private String photoUrl;
 
+	@Column(nullable = false)
+	private boolean verified = false;
+
+	@Column(name = "verification_code", nullable = true)
+	private String verificationCode;
+
 	public Integer getIdUser() {
 		return idUser;
 	}
@@ -180,4 +186,12 @@ public void setCallStyle(String callStyle) {
 
 public String getPhotoUrl() { return photoUrl; }
 public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+
+public boolean isVerified() { return verified; }
+public void setVerified(boolean verified) { this.verified = verified; }
+
+public String getVerificationCode() { return verificationCode; }
+public void setVerificationCode(String verificationCode) { this.verificationCode = verificationCode; }
 	}
+
+	

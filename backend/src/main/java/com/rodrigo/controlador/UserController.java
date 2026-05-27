@@ -68,6 +68,19 @@ public ResponseEntity<?> updateProfile(@PathVariable Integer userId,
     }
 }
 
+@PostMapping("/verify")
+public ResponseEntity<?> verify(@RequestBody VerifyRequest req) {
+    try {
+        userService.verificarCodigo(req.email, req.code);
+        return ResponseEntity.ok("Cuenta verificada correctamente.");
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+
+
+
+
     //  DTOs (clases internas para recibir JSON) 
 
     static class RegisterRequest {
@@ -87,4 +100,9 @@ public ResponseEntity<?> updateProfile(@PathVariable Integer userId,
         public String name;
         public String email;
     }
+
+    static class VerifyRequest {
+    public String email;
+    public String code;
+}
 }
