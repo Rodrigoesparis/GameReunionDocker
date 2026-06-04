@@ -307,19 +307,19 @@ class GroupsScreenState extends State<GroupsScreen> {
   ),
   child: group['photoUrl'] != null && group['photoUrl'].toString().isNotEmpty
       ? ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            group['photoUrl'],
-            width: 52,
-            height: 52,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => const Icon(
-              Icons.sports_esports,
-              color: Color(0xFF7C3AED),
-              size: 28,
-            ),
-          ),
-        )
+    borderRadius: BorderRadius.circular(12),
+    child: Image.network(
+      ApiService.groupPhotoUrl(group['idGroup']),
+      width: 52,
+      height: 52,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => const Icon(
+        Icons.sports_esports,
+        color: Color(0xFF7C3AED),
+        size: 28,
+      ),
+    ),
+  )
       : const Icon(
           Icons.sports_esports,
           color: Color(0xFF7C3AED),
@@ -556,9 +556,11 @@ class GroupsScreenState extends State<GroupsScreen> {
                                 clipBehavior: Clip.none,
                                 children: [
                                   UserAvatar(
-  username: u['username'] ?? '?',
-  photoUrl: u['photoUrl'],
-),
+                                    username: u['username'] ?? '?',
+                                    photoUrl: u['idUser'] != null
+                                        ? ApiService.userPhotoUrl(u['idUser'])
+                                        : null,
+                                  ),
                                   if (isLeader)
                                     const Positioned(
                                       top: -6,
@@ -832,10 +834,10 @@ class _PendingRequestsButtonState extends State<_PendingRequestsButton> {
               child: Row(
                 children: [
                   UserAvatar(
-  username: r['username'] ?? '?',
-  photoUrl: r['photoUrl'],
-  radius: 18,
-),
+                    username: r['username'] ?? '?',
+                    photoUrl: r['idUser'] != null ? ApiService.userPhotoUrl(r['idUser']) : null,
+                    radius: 18,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(

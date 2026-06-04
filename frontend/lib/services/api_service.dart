@@ -315,49 +315,28 @@ class ApiService {
       return null;
     }
   }
-
-  // Subir foto de perfil
-static Future<String?> uploadUserPhoto(int userId, File imageFile) async {
-  try {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/images/user/$userId'),
-    );
-    request.files.add(
-      await http.MultipartFile.fromPath('file', imageFile.path),
-    );
-    final response = await request.send();
-    if (response.statusCode == 200) {
-      final body = jsonDecode(await response.stream.bytesToString());
-      return body['photoUrl'];
-    }
-    return null;
-  } catch (e) {
-    return null;
+  // Subir foto de usuario
+  static Future<void> uploadUserPhoto(int userId, File photo) async {
+    final uri = Uri.parse('$baseUrl/images/user/$userId');
+    final request = http.MultipartRequest('POST', uri);
+    request.files.add(await http.MultipartFile.fromPath('file', photo.path));
+    await request.send();
   }
-}
 
 // Subir foto de grupo
-static Future<String?> uploadGroupPhoto(int groupId, File imageFile) async {
-  try {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/images/group/$groupId'),
-    );
-    request.files.add(
-      await http.MultipartFile.fromPath('file', imageFile.path),
-    );
-    final response = await request.send();
-    if (response.statusCode == 200) {
-      final body = jsonDecode(await response.stream.bytesToString());
-      print('>>> PHOTO URL: ${body['photoUrl']}');
-      return body['photoUrl'];
-    }
-    return null;
-  } catch (e) {
-    return null;
+  static Future<void> uploadGroupPhoto(int groupId, File photo) async {
+    final uri = Uri.parse('$baseUrl/images/group/$groupId');
+    final request = http.MultipartRequest('POST', uri);
+    request.files.add(await http.MultipartFile.fromPath('file', photo.path));
+    await request.send();
   }
-}
+
+// URL de foto de usuario (para pasarla a UserAvatar o Image.network)
+  static String userPhotoUrl(int userId) => '$baseUrl/images/user/$userId';
+
+// URL de foto de grupo
+  static String groupPhotoUrl(int groupId) => '$baseUrl/images/group/$groupId';
+
 
 // Verificar código de email
 static Future<Map<String, dynamic>> verifyEmail(String email, String code) async {

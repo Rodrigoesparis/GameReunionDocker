@@ -286,62 +286,58 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
           children: [
             // Banner
             Container(
-  width: double.infinity,
-  height: 180,
-  color: const Color(0xFF1A1A2E),
-  child: Stack(
-    children: [
-      // Fondo: foto del grupo o icono genérico
-      widget.group['photoUrl'] != null && widget.group['photoUrl'].toString().isNotEmpty
-          ? SizedBox.expand(
-              child: Image.network(
-                widget.group['photoUrl'],
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Center(
-                  child: Icon(Icons.sports_esports, size: 80, color: Color(0xFF7C3AED)),
-                ),
+              width: double.infinity,
+              height: 180,
+              color: const Color(0xFF1A1A2E),
+              child: Stack(
+                children: [
+                  // Fondo: foto del grupo con fallback
+                  SizedBox.expand(
+                    child: Image.network(
+                      ApiService.groupPhotoUrl(widget.group['idGroup'] as int),
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Icon(Icons.sports_esports, size: 80, color: Color(0xFF7C3AED)),
+                      ),
+                    ),
+                  ),
+                  // Degradado
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.group['name'] ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.group['game'] ?? '',
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            )
-          : const Center(
-              child: Icon(Icons.sports_esports, size: 80, color: Color(0xFF7C3AED)),
             ),
-      // Degradado para que el texto se lea bien encima de la foto
-      Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.7),
-            ],
-          ),
-        ),
-      ),
-      Positioned(
-        bottom: 16,
-        left: 16,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.group['name'] ?? '',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              widget.group['game'] ?? '',
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
             // Info
             Padding(
               padding: const EdgeInsets.all(16),

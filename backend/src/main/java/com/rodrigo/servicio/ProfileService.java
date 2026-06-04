@@ -62,7 +62,6 @@ public class ProfileService {
         profile.put("callStyle", user.getCallStyle());
         profile.put("country", user.getCountry());
         profile.put("timezone", user.getTimezone());
-        profile.put("photoUrl", user.getPhotoUrl()); // ← aquí, junto a los demás campos
         profile.put("games", games);
         profile.put("languages", languages);
         profile.put("platforms", platforms);

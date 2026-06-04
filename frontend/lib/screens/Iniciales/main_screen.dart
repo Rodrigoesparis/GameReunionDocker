@@ -190,7 +190,7 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: UserAvatar(
                 username: widget.user['username'] ?? '?',
-                photoUrl: _profile?['photoUrl'],
+                photoUrl: ApiService.userPhotoUrl(widget.user['idUser'] as int),
                 radius: 18,
               ),
             ),

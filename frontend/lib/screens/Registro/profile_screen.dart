@@ -781,23 +781,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _pickAndUploadPhoto() async {
-  final picker = ImagePicker();
-  final picked = await picker.pickImage(
-    source: ImageSource.gallery,
-    maxWidth: 512,
-    maxHeight: 512,
-    imageQuality: 85,
-  );
-  if (picked == null) return;
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 85,
+    );
+    if (picked == null) return;
 
-  final file = File(picked.path);
-  final url = await ApiService.uploadUserPhoto(widget.user['idUser'], file);
+    final file = File(picked.path);
+    await ApiService.uploadUserPhoto(widget.user['idUser'] as int, file);
 
-  if (url != null) {
     setState(() {
-      _profile!['photoUrl'] = url;
-      _newPhoto = file;
+      _newPhoto = file; // muestra la foto local inmediatamente
     });
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -806,15 +805,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     }
-  } else {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error al subir la foto'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
   }
-}
 }

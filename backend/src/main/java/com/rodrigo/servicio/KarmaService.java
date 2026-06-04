@@ -59,7 +59,6 @@ public class KarmaService {
             m.put("idUser", u.getIdUser());
             m.put("username", u.getUsername());
             m.put("karma", u.getKarma());
-            m.put("photoUrl", u.getPhotoUrl());
             return m;
         })
         .toList();

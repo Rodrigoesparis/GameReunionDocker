@@ -71,8 +71,9 @@ public class User {
 	@JsonIgnore
 	private List<Lenguage> languages;
 
-	@Column(name = "photo_url", nullable = true)
-	private String photoUrl;
+	@Lob
+	@Column(name = "photo", columnDefinition = "LONGBLOB", nullable = true)
+	private byte[] photo;
 
 	@Column(nullable = false)
 	private boolean verified = false;
@@ -184,8 +185,8 @@ public void setCallStyle(String callStyle) {
     this.callStyle = callStyle;
 }
 
-public String getPhotoUrl() { return photoUrl; }
-public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+public byte[] getPhoto() { return photo; }
+public void setPhoto(byte[] photo) { this.photo = photo; }
 
 public boolean isVerified() { return verified; }
 public void setVerified(boolean verified) { this.verified = verified; }

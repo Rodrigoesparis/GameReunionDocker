@@ -51,8 +51,9 @@ public class GameReunion {
     @JsonIgnore
     private List<Message> messages;
 
-    @Column(name = "photo_url", nullable = true)
-    private String photoUrl;
+    @Lob
+    @Column(name = "photo", columnDefinition = "LONGBLOB", nullable = true)
+    private byte[] photo;
 
     public Integer getIdGroup() { return idGroup; }
     public void setIdGroup(Integer idGroup) { this.idGroup = idGroup; }
@@ -87,6 +88,6 @@ public class GameReunion {
     public List<Message> getMessages(){ return messages;}
     public void setMessage(List<Message>messages){this.messages = messages;}
 
-    public String getPhotoUrl() { return photoUrl; }
-    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+    public byte[] getPhoto() { return photo; }
+    public void setPhoto(byte[] photo) { this.photo = photo; }
 }

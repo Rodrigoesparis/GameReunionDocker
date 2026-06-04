@@ -133,7 +133,6 @@ public List<Map<String, Object>> listarParticipantes(Integer groupId) {
             Map<String, Object> userMap = new LinkedHashMap<>();
             userMap.put("idUser", u.getIdUser());
             userMap.put("username", u.getUsername());
-            userMap.put("photoUrl", u.getPhotoUrl());
             userMap.put("karma", u.getKarma());
 
             Map<String, Object> result = new LinkedHashMap<>();
@@ -161,7 +160,6 @@ public List<Map<String, Object>> listarParticipantes(Integer groupId) {
     groupMap.put("privacy", g.getPrivacy());
     groupMap.put("maxPlayers", g.getMaxPlayers());
     groupMap.put("currentPlayers", currentPlayers);
-    groupMap.put("photoUrl", g.getPhotoUrl()); // ← clave
 
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("group", groupMap);

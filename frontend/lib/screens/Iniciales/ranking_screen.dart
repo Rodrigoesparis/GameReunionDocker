@@ -128,7 +128,9 @@ class _RankingScreenState extends State<RankingScreen> {
                       // Avatar
                       UserAvatar(
                         username: u['username'] ?? '?',
-                        photoUrl: u['photoUrl'],
+                        photoUrl: u['idUser'] != null
+                            ? ApiService.userPhotoUrl(u['idUser'])
+                            : null,
                       ),
                       const SizedBox(width: 12),
 

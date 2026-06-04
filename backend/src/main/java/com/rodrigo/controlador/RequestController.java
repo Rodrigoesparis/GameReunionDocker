@@ -165,7 +165,6 @@ public class RequestController {
         public Integer userId;
         public String status;
         public String createdAt;
-        public String photoUrl;
 
         public RequestDTO(Request r) {
             this.id = r.getId();
@@ -173,7 +172,6 @@ public class RequestController {
             this.userId = r.getUser().getIdUser();
             this.status = r.getStatus().name();
             this.createdAt = r.getCreatedAt().toString();
-            this.photoUrl = r.getUser().getPhotoUrl();
         }
     }
 }

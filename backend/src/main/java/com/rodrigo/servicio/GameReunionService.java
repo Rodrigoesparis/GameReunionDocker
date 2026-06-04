@@ -198,7 +198,6 @@ private GroupEventController groupEventController;
         public Privacy privacy;
         public Integer maxPlayers;
         public int currentPlayers;
-        public String photoUrl;
 
         public GameReunionDTO(GameReunion g, int current) {
             this.idGroup = g.getIdGroup();
@@ -208,7 +207,6 @@ private GroupEventController groupEventController;
             this.privacy = g.getPrivacy();
             this.maxPlayers = g.getMaxPlayers();
             this.currentPlayers = current;
-            this.photoUrl = g.getPhotoUrl();
         }
     }
 }

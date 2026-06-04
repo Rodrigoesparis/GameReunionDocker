@@ -333,7 +333,9 @@ class _GroupMembersScreenState extends State<GroupMembersScreen> {
                           children: [
                             UserAvatar(
                               username: user['username'] ?? '?',
-                              photoUrl: user['photoUrl'],
+                              photoUrl: user['idUser'] != null
+                                  ? ApiService.userPhotoUrl(user['idUser'] as int)
+                                  : null,
                             ),
                             if (isThisLeader)
                               const Positioned(
