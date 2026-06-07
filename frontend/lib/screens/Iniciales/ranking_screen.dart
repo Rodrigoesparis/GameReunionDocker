@@ -13,6 +13,7 @@ class RankingScreen extends StatefulWidget {
 class _RankingScreenState extends State<RankingScreen> {
   List<dynamic> _ranking = [];
   bool _loading = true;
+  bool _ascending = false;
 
   @override
   void initState() {
@@ -22,7 +23,8 @@ class _RankingScreenState extends State<RankingScreen> {
 
   Future<void> _loadRanking() async {
     setState(() => _loading = true);
-    final data = await ApiService.getKarmaRanking();
+    final order = _ascending ? 'asc' : 'desc';
+    final data = await ApiService.getKarmaRanking(order: order);
     setState(() {
       _ranking = data;
       _loading = false;
@@ -41,8 +43,8 @@ class _RankingScreenState extends State<RankingScreen> {
         content: Text(
           result['success']
               ? voteType == 'UP'
-                    ? '👍 +2 karma otorgado'
-                    : '👎 -1 karma aplicado'
+              ? '👍 +2 karma otorgado'
+              : '👎 -1 karma aplicado'
               : result['message'] ?? 'No se pudo votar',
         ),
         backgroundColor: result['success']
@@ -89,10 +91,59 @@ class _RankingScreenState extends State<RankingScreen> {
       onRefresh: _loadRanking,
       child: _loading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF7C3AED)),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+        child: CircularProgressIndicator(color: Color(0xFF7C3AED)),
+      )
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() => _ascending = !_ascending);
+                    _loadRanking();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1A1A2E),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: const Color(0xFF7C3AED).withOpacity(0.5),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _ascending
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: const Color(0xFF7C3AED),
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          _ascending ? 'Menor a mayor' : 'Mayor a menor',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
               itemCount: _ranking.length,
               itemBuilder: (context, index) {
                 final u = _ranking[index];
@@ -110,22 +161,23 @@ class _RankingScreenState extends State<RankingScreen> {
                     borderRadius: BorderRadius.circular(14),
                     border: isMe
                         ? Border.all(
-                            color: const Color(0xFF7C3AED).withOpacity(0.6),
-                          )
+                      color: const Color(
+                        0xFF7C3AED,
+                      ).withOpacity(0.6),
+                    )
                         : index < 3
-                        ? Border.all(color: Colors.amber.withOpacity(0.3))
+                        ? Border.all(
+                      color: Colors.amber.withOpacity(0.3),
+                    )
                         : null,
                   ),
                   child: Row(
                     children: [
-                      // Posición
                       SizedBox(
                         width: 36,
                         child: Center(child: _medalWidget(index)),
                       ),
                       const SizedBox(width: 12),
-
-                      // Avatar
                       UserAvatar(
                         username: u['username'] ?? '?',
                         photoUrl: u['idUser'] != null
@@ -133,8 +185,6 @@ class _RankingScreenState extends State<RankingScreen> {
                             : null,
                       ),
                       const SizedBox(width: 12),
-
-                      // Nombre y karma
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,6 +237,9 @@ class _RankingScreenState extends State<RankingScreen> {
                 );
               },
             ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -30,9 +30,9 @@ public class KarmaController {
         }
     }
 
-    // Obtener ranking
     @GetMapping("/ranking")
-    public ResponseEntity<List<Map<String, Object>>> getRanking() {
-        return ResponseEntity.ok(karmaService.getRanking());
-    }
+    public ResponseEntity<List<Map<String, Object>>> getRanking(
+        @RequestParam(defaultValue = "desc") String order) {
+    return ResponseEntity.ok(karmaService.getRanking(order));
+}   
 }

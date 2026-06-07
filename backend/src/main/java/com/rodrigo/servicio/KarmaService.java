@@ -50,10 +50,12 @@ public class KarmaService {
         karmaVoteRepository.save(vote);
     }
 
-    public List<Map<String, Object>> getRanking() {
+    public List<Map<String, Object>> getRanking(String order) {
     return userRepository.findAll()
         .stream()
-        .sorted((a, b) -> b.getKarma() - a.getKarma())
+        .sorted((a, b) -> order.equals("asc")
+            ? a.getKarma() - b.getKarma()   // menor a mayor
+            : b.getKarma() - a.getKarma())   // mayor a menor (default)
         .map(u -> {
             Map<String, Object> m = new LinkedHashMap<>();
             m.put("idUser", u.getIdUser());

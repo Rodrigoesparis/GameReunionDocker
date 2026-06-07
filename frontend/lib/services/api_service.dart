@@ -257,9 +257,11 @@ class ApiService {
   }
 
   // Obtener ranking de karma
-  static Future<List<dynamic>> getKarmaRanking() async {
+  static Future<List<dynamic>> getKarmaRanking({String order = 'desc'}) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/karma/ranking'));
+      final response = await http.get(
+        Uri.parse('$baseUrl/karma/ranking?order=$order'),
+      );
       if (response.statusCode == 200) return jsonDecode(response.body);
       return [];
     } catch (e) {
